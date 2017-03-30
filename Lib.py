@@ -18,7 +18,7 @@ class DashGUI:
         self.GPSSpeed = StringVar()
         self.FCons = StringVar()
         self.splitTimes = [StringVar(),StringVar(),StringVar(),StringVar(),StringVar()]
-        
+        self.CA=[]
         
         #Fonts
         sectionTitle = tkFont.Font(family = 'Helvetica', size = 24, weight = 'bold')
@@ -42,12 +42,19 @@ class DashGUI:
         Label(self.labelSect, text="Speed:", font=sectionTitle, bg='black', fg='white').grid(row=0, sticky=N+W)
         self.labelSpeed = Label(self.labelSect, text="Speed", textvariable=self.GPSSpeed, font=general, bg='black', fg='white')
         self.labelSpeed.grid(row=0, column=1)
+        
         Label(self.labelSect, text="Fuel Cons:", font=sectionTitle, bg='black', fg='white').grid(row=1, sticky=N+W)
         self.labelFCons = Label(self.labelSect, text="FCons:",textvariable=self.FCons, font=general, bg='black', fg='white')
         self.labelFCons.grid(row=1, column=1)
+       
+
+   
         
         #Control Output 
         Label(self.labelSect, text="Control Action", font=sectionTitle, bg='black', fg='white').grid(row=2, column=0, sticky=N+W)
+        self.labelCA = Label(self.labelSect, text="Control Action", textvariable=self.CA, font=general, bg='black', fg='white')
+        self.labelCA.grid(row=2, column=1)
+        
 
         #Times
         Label(self.timesSect, text="Lap Times", font=sectionTitle, bg='black', fg='white').grid(row=0, sticky=N+W)
@@ -91,6 +98,16 @@ class DashGUI:
         else:
             self.GPSSpeed.set("-")
         
+        CA = DM.DataManager.getSpeed()    
+        #The above should change to the the module you want it to correspond to
+        if GPSSpeed> 0.230:
+            self.labelCA["text"] = "COAST"
+            self.labelCA["background"] = "red"
+        elif GPSSpeed< 0.228:
+            self.labelCA["text"] = "BOOST"
+            self.labelCA["background"] = "green"
+        else:
+            pass
         i = 0
         for Val in DM.DataManager.lineCrossTimes:
             if i > 0 and i < 6:
@@ -173,7 +190,7 @@ class MiniMap(Canvas):
             
             
         """Process finish line"""
-        finData = self.posToPixel(np.genfromtxt('FinishCoOrds_B.csv', delimiter=','))
+        finData = self.posToPixel(np.genfromtxt('FinishCoOrds.csv', delimiter=','))
         self.finLine = finData
         self.create_line((finData[0,0], finData[0,1], finData[1,0], finData[1,1]), fill="red")
         
@@ -200,12 +217,12 @@ class MiniMap(Canvas):
             #True is greater than 0, right hand side
             #So false to true for going clockwise
             if self.lastSide is None:
-                self.lastSide = (value < 0)
+                self.lastSide = (value > 0)
             else:
-                if self.lastSide == True and (value < 0):
+                if self.lastSide == True and (value > 0):
                     DM.DataManager.lineCrossTimes.insert(0, time.time())
 
-                self.lastSide = (value > 0)
+                self.lastSide = (value < 0)
         
         self.master.after(self.refreshTime, self.startPosTracking)
         

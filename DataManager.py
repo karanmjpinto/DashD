@@ -32,7 +32,7 @@ class DataManager():
     @classmethod
     def getTrackData(self, colName = False):
         if DataManager._trackFile is False:
-            DataManager._trackFile = np.loadtxt('ALLTrackData_3.csv', delimiter=',')
+            DataManager._trackFile = np.loadtxt('ALLTrackData.csv', delimiter=',')
             
         #1 - 'Index' -  Index, for usefullness
         #2,3 - 'LongLat' - GPS Long and Lat
@@ -124,7 +124,7 @@ class DataManager():
     @classmethod
     def getGPSSpeed(self):
         if DataManager.isEmulate:
-            return random.random()
+            return random.uniform(1,10)
         else:
             report = DataManager.getGPSReport()
             #print report
@@ -138,7 +138,7 @@ class DataManager():
     @classmethod
     def getFCons(self):
         if DataManager.isEmulate:
-            return random.random()
+            return random.uniform(1,10)
         else:
             return 0
             print("This has not been coded yet")
