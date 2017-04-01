@@ -190,7 +190,7 @@ class MiniMap(Canvas):
             
             
         """Process finish line"""
-        finData = self.posToPixel(np.genfromtxt('FinishCoOrds.csv', delimiter=','))
+        finData = self.posToPixel(np.genfromtxt('FinishCoOrds_Final.csv', delimiter=','))
         self.finLine = finData
         self.create_line((finData[0,0], finData[0,1], finData[1,0], finData[1,1]), fill="red")
         

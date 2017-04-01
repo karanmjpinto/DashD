@@ -32,7 +32,7 @@ class DataManager():
     @classmethod
     def getTrackData(self, colName = False):
         if DataManager._trackFile is False:
-            DataManager._trackFile = np.loadtxt('ALLTrackData.csv', delimiter=',')
+            DataManager._trackFile = np.loadtxt('ALLTrackData_Final.csv', delimiter=',')
             
         #1 - 'Index' -  Index, for usefullness
         #2,3 - 'LongLat' - GPS Long and Lat
